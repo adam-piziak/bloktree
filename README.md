@@ -1,2 +1,8 @@
 # bloktree
-Web App for Bloktree
+Web app for BlokTree
+
+``` bash
+npm install
+
+npm run dev
+```
