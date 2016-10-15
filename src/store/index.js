@@ -1,19 +1,41 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as actions from './actions'
-import * as getters from './getters'
-import * as mutations from './mutations'
 
 Vue.use(Vuex)
 
+const state = {
+  tasks: [
+    {
+      name: 'study for physics',
+      project: 'physics'
+    }
+  ],
+  projects: [
+    {
+      name: 'physics'
+    }
+  ]
+}
+
+const mutations = {
+  CREATE_TASK (state, task) {
+    state.tasks.push({
+      name: task
+    })
+    console.log(task)
+  }
+}
+
+const actions = {
+  createTask ({ commit }) {
+    commit('CREATE_TASK')
+  }
+}
+
 const store = new Vuex.Store({
-  state: {
-    tasks: [],
-    projects: []
-  },
+  state,
   mutations,
-  actions,
-  getters
+  actions
 })
 
 export default store

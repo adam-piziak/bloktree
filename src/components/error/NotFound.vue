@@ -6,7 +6,7 @@
 
 <script>
 </script>
-<style lang="sass">
+<style scoped lang="sass">
 *
   margin: 0
   padding: 0

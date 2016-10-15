@@ -6,16 +6,33 @@ import Tasks from '../components/Tasks'
 import Projects from '../components/Projects'
 import AuthPage from '../components/auth/Auth'
 import NotFound from '../components/error/NotFound.vue'
+import Main from '../components/Main.vue'
 
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
   routes: [
-    { path: '/', redirect: { path: '/tasks' } },
-    { path: '/tasks', component: Tasks, meta: { requiresAuth: true } },
-    { path: '/projects', component: Projects },
-    { path: '/authenticate', component: AuthPage },
+    {
+      path: '/',
+      component: Main,
+      redirect: { path: '/tasks' },
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'tasks',
+          component: Tasks
+        },
+        {
+          path: 'projects',
+          component: Projects
+        }
+      ]
+    },
+    {
+      path: '/authenticate',
+      component: AuthPage
+    },
     { path: '*', component: NotFound }
   ]
 })

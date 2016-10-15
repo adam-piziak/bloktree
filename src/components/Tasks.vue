@@ -1,14 +1,33 @@
 <template>
   <div class="tasks-component">
-    Tasks component
+    <input v-model='newTask.name' type="text" placeholder="add new task" @keydown.enter="createTask()">
+    <p v-for="task in tasks">
+      {{ task.name }}
+    </p>
   </div>
 </template>
 
 <script>
+// import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-      msg: 'Hello Vue!'
+      newTask: {
+        name: '',
+        project: 'Physics'
+      },
+      projects: this.$store.state.projects
+    }
+  },
+  methods: {
+    createTask (task) {
+      this.$store.commit('CREATE_TASK', this.newTask.name)
+    }
+  },
+  computed: {
+    tasks () {
+      return this.$store.state.tasks
     }
   }
 }
@@ -16,8 +35,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="sass">
-.tasks-component
-  background: pink
-
 
 </style>
