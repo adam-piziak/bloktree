@@ -1,4 +1,4 @@
-# bloktree
+# BlokTree
 Web app for BlokTree
 
 ``` bash
