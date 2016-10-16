@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style scoped lang="sass">
 @import "bourbon"
 
 $background: rgb(247, 247, 247)

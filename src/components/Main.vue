@@ -13,7 +13,6 @@
 
 <style scoped lang="sass">
 @import bourbon
-
 header
   background: #FAFAFA
   letter-spacing: .01em
