@@ -1,15 +1,15 @@
 <template>
-  <div class="tasks-component">
+  <div class="tasks">
 
     <input v-model='newTask.name'
            type="text"
            class="new-task-input"
            placeholder="add new task"
-           @keydown.enter="createTask(newTask)" />
+           @keydown.enter="createTask()" />
 
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
-      <task v-for="task in tasks" :unit="task"></task>
+      <Task v-for="task in tasks" :unit="task"></Task>
     </div>
 
   </div>

@@ -19,10 +19,11 @@ const state = {
 
 const mutations = {
   [types.CREATE_TASK] (state, { task }) {
-    let newTask = {
+    const unit = {
+      id: state.all.length + 1,
       name: task.name
     }
-    state.all.push(newTask)
+    state.all.push(unit)
   },
 
   [types.EDIT_TASK] (state, { edit }) {
