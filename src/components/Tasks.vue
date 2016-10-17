@@ -5,8 +5,10 @@
            type="text"
            class="new-task-input"
            placeholder="add new task"
-           @keydown.enter="createTask()" />
-    <div class="tasks-wrapper">
+           @keydown.enter="createTask(newTask)" />
+
+    <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
+    <div else class="tasks-wrapper">
       <task v-for="task in tasks" :unit="task"></task>
     </div>
 
@@ -28,9 +30,18 @@ export default {
   components: {
     Task
   },
-  computed: mapGetters({
-    tasks: 'tasks'
-  }),
+  computed: {
+    noTasks () {
+      if (this.tasks.length === 0) {
+        return true
+      } else {
+        return false
+      }
+    },
+    ...mapGetters([
+      'tasks'
+    ])
+  },
   methods: {
     createTask () {
       let task = this.newTask
@@ -55,10 +66,14 @@ export default {
   +transform(translateX(-50%))
 
 .tasks-wrapper
-  background: pink
   margin-left: 50%
   margin-top: 10px
   +transform(translateX(-50%))
   width: 960px
   box-shadow: 0 2px 2px rgba(0,0,0,.2)
+
+.no-tasks-message
+  margin: 20px
+  text-align: center
+  font-style: italic
 </style>
