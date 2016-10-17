@@ -3,7 +3,16 @@ import * as types from '../mutations-types'
 const state = {
   all: [
     {
+      id: 1,
       name: 'run'
+    },
+    {
+      id: 2,
+      name: 'study for test'
+    },
+    {
+      id: 3,
+      name: 'finish final draft'
     }
   ]
 }
