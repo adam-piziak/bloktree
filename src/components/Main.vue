@@ -13,10 +13,15 @@
 
 <style scoped lang="sass">
 @import bourbon
+
+#main
+  min-height: 100vh
+  background: rgb(250, 249, 249)
 header
   background: #FAFAFA
   letter-spacing: .01em
   height: 50px
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.07)
 
 nav
   display: inline-block
@@ -39,7 +44,8 @@ h1
   display: inline-block
   height: 50px
   line-height: 50px
-  color: rgb(52, 52, 52)
+  color: rgb(102, 102, 102)
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3)
   margin: 0 30px
   font:
     weight: 500

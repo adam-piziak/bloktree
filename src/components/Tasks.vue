@@ -1,17 +1,21 @@
 <template>
   <div class="tasks-component">
+
     <input v-model='newTask.name'
            type="text"
+           class="new-task-input"
            placeholder="add new task"
            @keydown.enter="createTask()" />
-    <p v-for="task in tasks">
-      {{ task.name }}
-    </p>
+    <div class="tasks-wrapper">
+      <task v-for="task in tasks" :unit="task"></task>
+    </div>
+
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import Task from './tasks/Task.vue'
 
 export default {
   data () {
@@ -21,6 +25,9 @@ export default {
       }
     }
   },
+  components: {
+    Task
+  },
   computed: mapGetters({
     tasks: 'tasks'
   }),
@@ -29,13 +36,29 @@ export default {
       let task = this.newTask
       this.$store.dispatch('createTask', task)
       this.newTask.name = ''
-    },
-    ...mapActions([])
+    }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="sass">
-  
+@import bourbon
+
+.new-task-input
+  height: 30px
+  width: 300px
+  text-indent: 10px
+  margin-left: 50%
+  margin-top: 10px
+  +transform(translateX(-50%))
+
+.tasks-wrapper
+  background: pink
+  margin-left: 50%
+  margin-top: 10px
+  +transform(translateX(-50%))
+  width: 960px
+  box-shadow: 0 2px 2px rgba(0,0,0,.2)
 </style>
