@@ -1,27 +1,15 @@
 import * as types from '../mutations-types'
 
 const state = {
-  all: [
-    {
-      id: 1,
-      name: 'run'
-    },
-    {
-      id: 2,
-      name: 'study for test'
-    },
-    {
-      id: 3,
-      name: 'finish final draft'
-    }
-  ]
+  all: []
 }
 
 const mutations = {
   [types.CREATE_TASK] (state, { task }) {
     const unit = {
       id: state.all.length + 1,
-      name: task.name
+      name: task.name,
+      project: task.project
     }
     state.all.push(unit)
   },

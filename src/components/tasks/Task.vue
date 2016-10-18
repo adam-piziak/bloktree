@@ -1,7 +1,11 @@
 <template>
   <div class="task">
-    <div class="done-checkbox" @click="deleteTask(unit.id)"></div>
-    <div class="task-name"> {{ unit.name }}</div>
+    <span class="accent" :style="{ background: task.project.color }"></span>
+    <div class="done-checkbox" @click="deleteTask(task.id)"></div>
+    <div class="task-data">
+      <span class="project-name" :style="{ color: task.project.color}"> {{ task.project.name }}</span>
+      <span class="task-name"> {{ task.name }}</span>
+    </div>
   </div>
 </template>
 
@@ -11,7 +15,7 @@ export default {
   data () {
     return {}
   },
-  props: ['unit'],
+  props: ['task'],
   methods: mapActions({
     deleteTask: 'deleteTask'
   })
@@ -21,37 +25,52 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$height: 40px
+$height: 50px
 $assets: '../../assets/'
 .task
   background: rgb(255, 255, 255)
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1)
   height: $height
 
   &:hover
     background: rgb(245, 245, 245)
     cursor: pointer
 
-.task-name
+
+.task-data
   display: inline-block
   height: $height
-  line-height: $height
   vertical-align: top
-  font:
-    size: .9em
 
-  &::first-letter
-    text-transform: capitalize
+  .project-name, .task-name
+    float: left
+    clear: both
+    display: inline-block
+
+    &::first-letter
+      text-transform: capitalize
+
+  .project-name
+    height: (1/4)*$height
+    line-height: (1/4)*$height
+    margin-top: (1/8)*$height
+    font-size: .8em
+
+  .task-name
+    height: (1/2)*$height
+    line-height: (1/2)*$height
+    margin-bottom: (1/8)*$height
 
 $checksize: 17px
 .done-checkbox
   +size($checksize)
-  margin: (($height - $checksize)/2) 8px
+  padding: (($height - $checksize)/2) 10px
   display: inline-block
-  opacity: 0.8
+  opacity: 0.7
   background:
     color: transparent
     image: url($assets + 'icons/check_box_unmarked.svg')
-    size: 100%
+    size: 50%
     position: center center
     repeat: no-repeat
 
@@ -60,4 +79,9 @@ $checksize: 17px
     background:
       image: url($assets + 'icons/check_box_marked.svg')
 
+.accent
+  background: black
+  display: inline-block
+  height: $height + 1px //for border
+  width: 2px
 </style>
