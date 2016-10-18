@@ -1,8 +1,6 @@
 # BlokTree
 Web app for BlokTree
 
-http://www.bloktree.com
-
 Tasks page:
 ![alt tag](./readme/tasks.png)
 
