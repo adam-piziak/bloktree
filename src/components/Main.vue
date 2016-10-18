@@ -45,7 +45,6 @@ h1
   height: 50px
   line-height: 50px
   color: rgb(102, 102, 102)
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3)
   margin: 0 30px
   font:
     weight: 500
