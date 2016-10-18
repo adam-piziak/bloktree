@@ -3,7 +3,10 @@ Web app for BlokTree
 
 http://www.bloktree.com
 
+Tasks page:
 ![alt tag](./readme/tasks.png)
+
+Projects page:
 ![alt tag](./readme/projects.png)
 
 Install:
