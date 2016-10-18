@@ -3,6 +3,9 @@ Web app for BlokTree
 
 http://www.bloktree.com
 
+![alt tag](./readme/tasks.png)
+![alt tag](./readme/projects.png)
+
 Install:
 ``` bash
 npm install
