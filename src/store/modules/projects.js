@@ -16,6 +16,11 @@ const state = {
       id: 3,
       name: 'health',
       color: '#9C27B0'
+    },
+    {
+      id: 4,
+      name: 'BlokTree',
+      color: '#00BCD4'
     }
   ],
   colors: [

@@ -36,10 +36,12 @@ import { mapGetters } from 'vuex'
 import Task from './tasks/Task.vue'
 
 export default {
+  name: 'Tasks',
   data () {
     return {
       newTask: {
         name: '',
+        parent: 0,
         project: {
           id: 0,
           name: 'general',
@@ -62,10 +64,10 @@ export default {
         return false
       }
     },
-    ...mapGetters([
-      'tasks',
-      'projects'
-    ])
+    ...mapGetters({
+      tasks: 'taskTrees',
+      projects: 'projects'
+    })
   },
   methods: {
     setNewProject (data) {

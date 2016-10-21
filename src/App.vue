@@ -7,6 +7,7 @@
 <script>
 import auth from './auth/'
 export default {
+  name: 'App',
   data () {
     return {
       authenticated: auth.user.authenticated

@@ -11,12 +11,18 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'Main'
+}
+</script>
+
 <style scoped lang="sass">
 @import bourbon
 
 #main
   min-height: 100vh
-  background: rgb(250, 249, 249)
+  background: rgb(247, 247, 247)
 header
   background: #FAFAFA
   letter-spacing: .01em
