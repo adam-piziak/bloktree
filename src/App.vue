@@ -13,8 +13,9 @@ export default {
       authenticated: auth.user.authenticated
     }
   },
-  components: {
-
+  mounted () {
+    auth.checkAuth()
+    this.$store.dispatch('setAllTasks')
   }
 }
 </script>

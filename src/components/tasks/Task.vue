@@ -1,14 +1,14 @@
 <template>
-  <div class="task" :class="{group: hasChildren}" @click.stop="state.expand = !state.expand">
-    <span v-if="isRoot" class="accent" :style="{ background: task.project.color }"></span>
+  <div class="task" @click="setState()":class="{group: hasChildren}" @click.stop="state.expand = !state.expand">
+    <span v-if="isRoot" class="accent" :style="{ background: projectColor }"></span>
     <div class="core">
       <div class="done-checkbox"
             @click="deleteTask(task.id)"></div>
       <div class="task-data">
         <span v-if="isRoot"
               class="project-name"
-              :style="{ color: task.project.color}">
-              {{ task.project.name }}
+              :style="{ color: projectColor}">
+              {{ projectName }}
         </span>
         <span v-if="!state.edit"
               class="task-name"
@@ -18,14 +18,19 @@
                         root: isRoot }">
               {{ task.name }}
         </span>
-        <input else
+        <input v-else
               class="task-name edit"
-              @keydown.enter="state.edit=false"
+              @keydown.enter="editTask"
+              @click.stop
               :class="{ group: hasChildren,
                         child: !isRoot,
                         root: isRoot }"
-              v-model="task.name">
+              v-model="edit.name">
         </input>
+      </div>
+      <div v-if="!hasChildren"
+            class="make-group"
+            @click="makeGroup(task.id)">
       </div>
       <span v-if="hasChildren"
             class="expand"
@@ -34,7 +39,14 @@
     </div>
     <div v-if="hasChildren" class="children-wrapper" :class="{open: state.expand }">
       <Task v-for="task in task.children" :task="task"></Task>
-      <div class="sub-task-creator" @click.stop="createTask()"></div>
+      <div class="sub-task-creator">
+        <div class="done-checkbox"></div>
+        <input placeholder="create new task"
+               @click.stop
+               @keydown.enter="createTask(newTask.name)"
+               v-model="newTask.name" >
+      <span class="border-bottom"></span>
+      </div>
     </div>
   </div>
 
@@ -49,10 +61,17 @@ export default {
       state: {
         edit: false,
         expand: false
+      },
+      newTask: {
+        name: ''
+      },
+      edit: {
+        id: this.task.id,
+        name: this.task.name
       }
     }
   },
-  props: ['task'],
+  props: ['task', 'projects'],
   computed: {
     hasChildren () {
       if (this.task.children) {
@@ -65,17 +84,47 @@ export default {
         return true
       }
       return false
+    },
+    projectColor () {
+      let color = 'rgb(97, 97, 97)'
+      for (let i in this.projects) {
+        if (this.projects[i].id === this.task.id) {
+          color = this.projects[i].color
+        }
+      }
+      console.log(color)
+      return color
+    },
+    projectName () {
+      let name = 'general'
+      for (let i in this.projects) {
+        if (this.projects[i].id === this.task.id) {
+          name = this.projects[i].name
+        }
+      }
+      return name
     }
   },
   methods: {
-    createTask () {
+    setState () {
+      this.state.edit = false
+    },
+    createTask (name) {
       const task = {
-        name: 'new task',
+        name: name,
         parent: this.task.id,
         hasChildren: false,
         project: null
       }
       this.$store.dispatch('createTask', task)
+      this.newTask.name = ''
+    },
+    editTask () {
+      this.$store.dispatch('editTask', this.edit)
+      this.state.edit = false
+    },
+    makeGroup () {
+      this.$store.dispatch('makeGroup', this.task.id)
     },
     ...mapActions({
       deleteTask: 'deleteTask'
@@ -87,7 +136,8 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$height: 50px
+$height: 40px
+$sub-task-creator-height: 40px
 $assets: '../../assets/'
 .task
   background: rgb(255, 255, 255)
@@ -105,30 +155,42 @@ $assets: '../../assets/'
     background: rgb(252, 252, 252)
     cursor: pointer
 
+  &:hover > .core .make-group
+    opacity: .6
+
+    &:hover
+      opacity: .8
+
 .sub-task-creator
-  height: 30px
-  width: 100%
-  padding-left: 30px
-  text-indent: 20px
-  outline: 0
-  border: 0
-  background:
-    color: rgba(231, 229, 226, 0.2)
-    image: url($assets + 'icons/plus.svg')
-    position: center center
-    repeat: no-repeat
-    size: 2%
+  background: white
 
-  &:hover
+  input
+    height: 100%
+    border: 0
+    outline: none
+    width: 900px
+    text-indent: 10px
+
+  .done-checkbox
     background:
-      color: rgba(231, 229, 226, 0.5)
-
+      size: 38%
 .core
   +display(flex)
   width: 100%
   height: $height
   position: relative
 
+.make-group
+  height: $height
+  width: $height
+  display: inline-block
+  opacity: 0
+  background:
+    color: transparent
+    image: url($assets + 'icons/group.svg')
+    position: center center
+    repeat: no-repeat
+    size: 55%
 .task-data
   display: inline-block
   height: $height
@@ -156,18 +218,18 @@ $assets: '../../assets/'
     height: (1/4)*$height
     line-height: (1/4)*$height
     margin-top: (1/8)*$height
-    font-size: .7em
+    font-size: .6em
 
   .task-name.root
     height: (1/2)*$height
     line-height: (1/2)*$height
     margin-bottom: (1/8)*$height
-    font-size: .9em
+    font-size: .7em
 
   .task-name.child
     height: $height
     line-height: $height
-    font-size: .9em
+    font-size: .7em
 
 .children-wrapper
   margin-left: 5px
@@ -178,8 +240,10 @@ $assets: '../../assets/'
     +transition(200ms)
 
   & > .sub-task-creator
-    height: 0
+    height: 0px
+    display: none
     +transition
+
   & > .group
     min-height: 0px
     height: 0
@@ -189,24 +253,26 @@ $assets: '../../assets/'
   &.open > .task
     min-height: $height
     max-height: $height
+
   &.open > .task.group
     min-height: $height
     height: 100%
     max-height: none
 
   &.open > .sub-task-creator
-    height: 30px
+    height: $sub-task-creator-height
+    display: block
 $checksize: 17px
 .done-checkbox
   +size($checksize)
   padding: (($height - $checksize)/2) 12px
   display: inline-block
   float: left
-  opacity: 0.7
+  opacity: 0.5
   background:
     color: transparent
     image: url($assets + 'icons/check_box_unmarked.svg')
-    size: 45%
+    size: 40%
     position: center center
     repeat: no-repeat
 

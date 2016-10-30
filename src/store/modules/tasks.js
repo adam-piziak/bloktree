@@ -1,59 +1,11 @@
 import * as types from '../mutations-types'
 
 const state = {
-  all: [
-    {
-      id: 1,
-      parent: 0,
-      hasChildren: true,
-      name: 'Physics',
-      project: {
-        id: 2,
-        name: 'Electrical Engineering',
-        color: '#2196F3'
-      }
-    },
-    {
-      id: 2,
-      parent: 1,
-      hasChildren: false,
-      name: 'Kinematics'
-    },
-    {
-      id: 3,
-      parent: 1,
-      hasChildren: true,
-      name: 'Homework'
-    },
-    {
-      id: 4,
-      parent: 3,
-      hasChildren: false,
-      name: 'Recitation'
-    },
-    {
-      id: 5,
-      parent: 3,
-      hasChildren: false,
-      name: 'Workshop 1'
-    },
-    {
-      id: 6,
-      parent: 0,
-      hasChildren: false,
-      name: 'Create recursive tasks',
-      project: {
-        id: 3,
-        name: 'BlokTree',
-        color: '#00BCD4'
-      }
-    }
-  ]
+  all: []
 }
 
 const mutations = {
   [types.CREATE_TASK] (state, { task }) {
-    console.log(task)
     const unit = {
       id: state.all.length + 1,
       name: task.name,
@@ -68,18 +20,38 @@ const mutations = {
     const all = state.all
     for (let i in all) {
       if (all[i].id === edit.id) {
-        all[i] = edit
+        all[i].name = edit.name
         break
       }
     }
   },
-
+  [types.MAKE_GROUP] (state, { id }) {
+    const all = state.all
+    for (let i in all) {
+      if (all[i].id === id) {
+        all[i].hasChildren = true
+        let task = {
+          id: state.all.length + 1,
+          name: 'new task',
+          parent: id,
+          hasChildren: false
+        }
+        all.push(task)
+      }
+    }
+  },
   [types.DELETE_TASK] (state, { id }) {
     const all = state.all
     for (let i in all) {
       if (all[i].id === id) {
         all.splice(i, 1)
       }
+    }
+  },
+  [types.SET_ALL_TASKS] (state, tasks) {
+    const all = state.all
+    for (let i in tasks) {
+      all.push(tasks[i])
     }
   }
 }

@@ -33,6 +33,7 @@
 import { mapGetters } from 'vuex'
 import Project from './projects/Project.vue'
 export default {
+  name: 'Projects',
   data () {
     return {
       newProject: {

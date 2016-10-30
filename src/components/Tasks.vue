@@ -10,13 +10,13 @@
       <div class="project-picker">
         <span class="project"
               @click="creator.projectPickerActive = !creator.projectPickerActive"
-              :style="{ color: newTask.project.color}">
-              {{ newTask.project.name }}
+              :style="{ color: projectColor}">
+              {{ projectName }}
         </span>
         <span v-show="creator.projectPickerActive"
               v-for="project in projects"
               class="project"
-              @click="setNewProject(project)"
+              @click="setNewProject(project.id)"
               :style="{ color: project.color }">
               {{ project.name}}
         </span>
@@ -25,7 +25,7 @@
 
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
-      <Task v-for="task in tasks" :task="task"></Task>
+      <Task v-for="task in tasks" :task="task" :projects="projects"></Task>
     </div>
 
   </div>
@@ -42,11 +42,9 @@ export default {
       newTask: {
         name: '',
         parent: 0,
-        project: {
-          id: 0,
-          name: 'general',
-          color: '#757575'
-        }
+        project: 1,
+        hasChildren: false,
+        priority: 0
       },
       creator: {
         projectPickerActive: false
@@ -57,6 +55,22 @@ export default {
     Task
   },
   computed: {
+    project () {
+      const id = this.newTask.project
+      let project = {}
+      for (let i in this.projects) {
+        if (this.projects[i].id === id) {
+          project = this.projects[i]
+        }
+      }
+      return project
+    },
+    projectName () {
+      return this.project.name
+    },
+    projectColor () {
+      return this.project.color
+    },
     noTasks () {
       if (this.tasks.length === 0) {
         return true
@@ -70,8 +84,8 @@ export default {
     })
   },
   methods: {
-    setNewProject (data) {
-      this.newTask.project = data
+    setNewProject (id) {
+      this.newTask.project = id
       this.creator.projectPickerActive = false
     },
     createTask () {

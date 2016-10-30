@@ -7,7 +7,7 @@ const SIGNUP_URL = API_URL + '/signup'
 export default {
 
   user: {
-    authenticated: true
+    authenticated: false
   },
 
   login (context, creds, redirect) {
@@ -42,8 +42,10 @@ export default {
     let jwt = localStorage.getItem('id_token')
     if (jwt) {
       this.user.authenticated = true
+      router.push('/tasks')
     } else {
       this.user.authenticated = false
+      router.push('/authenticate')
     }
   },
 
