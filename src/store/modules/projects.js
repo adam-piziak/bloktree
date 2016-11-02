@@ -112,7 +112,7 @@ const mutations = {
     const project = {
       id: state.all.length + 1,
       name: newProject.name,
-      color: newProject.color.hex
+      color: newProject.color
     }
     state.all.push(project)
   },

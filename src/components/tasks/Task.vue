@@ -88,7 +88,7 @@ export default {
     projectColor () {
       let color = 'rgb(97, 97, 97)'
       for (let i in this.projects) {
-        if (this.projects[i].id === this.task.id) {
+        if (this.projects[i].id === this.task.project) {
           color = this.projects[i].color
         }
       }
@@ -98,7 +98,7 @@ export default {
     projectName () {
       let name = 'general'
       for (let i in this.projects) {
-        if (this.projects[i].id === this.task.id) {
+        if (this.projects[i].id === this.task.project) {
           name = this.projects[i].name
         }
       }

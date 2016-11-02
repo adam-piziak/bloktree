@@ -7,22 +7,21 @@ export const createTask = ({ commit }, taskData) => {
   const token = localStorage.getItem('id_token')
   let task = {
     name: taskData.name,
-    parent: 0,
-    project: 1,
-    hasChildren: 0,
+    parent: taskData.parent,
+    project: taskData.project,
+    hasChildren: taskData.hasChildren,
     priority: 1
   }
   const data = {
     token,
     task
   }
-  Vue.http.post((API_URL + '/createTask'), data).then((res) => {
-    console.log(task.name)
+  Vue.http.post((API_URL + '/task/create'), data).then((res) => {
     if (res.body.success) {
       commit(types.CREATE_TASK, { task })
     }
   }, (err) => {
-    console.error('ERROR: ' + err)
+    console.error('ERROR: ' + JSON.stringify(err))
   })
 }
 
@@ -54,8 +53,20 @@ export const makeGroup = ({ commit }, id) => {
   commit(types.MAKE_GROUP, { id })
 }
 
-export const createProject = ({ commit }, newProject) => {
-  commit(types.CREATE_PROJECT, { newProject })
+export const createProject = ({ commit }, project) => {
+  let projectT = {
+    name: project.name,
+    color: project.color.hex
+  }
+  let newProject = projectT
+  console.log(JSON.stringify(projectT))
+  server.createProject(projectT, (err, success) => {
+    if (err) {
+      console.error(err)
+    } else {
+      commit(types.CREATE_PROJECT, { newProject })
+    }
+  })
 }
 
 export const deleteProject = ({ commit }, id) => {
