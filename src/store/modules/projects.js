@@ -124,6 +124,18 @@ const mutations = {
         all.splice(i, 1)
       }
     }
+  },
+
+  [types.SET_ALL_PROJECTS] (state, projects) {
+    state.all.length = 0
+    for (let i in projects) {
+      state.all.push(projects[i])
+    }
+    state.all.unshift({
+      id: 1,
+      name: 'general',
+      color: '#757575'
+    })
   }
 }
 

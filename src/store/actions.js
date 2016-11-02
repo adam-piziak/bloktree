@@ -72,3 +72,13 @@ export const createProject = ({ commit }, project) => {
 export const deleteProject = ({ commit }, id) => {
   commit(types.DELETE_PROJECT, { id })
 }
+
+export const setAllProjects = ({ commit }) => {
+  server.getAllProjects((err, projects) => {
+    if (err) {
+      console.error(err)
+    } else {
+      commit(types.SET_ALL_PROJECTS, projects)
+    }
+  })
+}

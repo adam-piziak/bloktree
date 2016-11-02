@@ -48,3 +48,16 @@ export const createProject = (project, callback) => {
     }
   })
 }
+
+export const getAllProjects = callback => {
+  const URL = SERVER_URL + '/project/getAll'
+  const token = localStorage.getItem('id_token')
+  const data = { token }
+  Vue.http.post(URL, data).then((res) => {
+    if (!res.body.success) {
+      callback(res.body.error)
+    } else {
+      callback(null, res.body.projects)
+    }
+  })
+}

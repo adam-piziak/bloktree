@@ -16,6 +16,7 @@ export default {
   mounted () {
     auth.checkAuth()
     this.$store.dispatch('setAllTasks')
+    this.$store.dispatch('setAllProjects')
   }
 }
 </script>
