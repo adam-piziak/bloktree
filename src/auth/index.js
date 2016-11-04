@@ -15,7 +15,7 @@ export default {
     context.$http.post(LOGIN_URL, creds).then((data) => {
       localStorage.setItem('id_token', data.body.id_token)
       this.user.authenticated = true
-      router.push('/tasks')
+      router.push('/projects')
     })
   },
 
@@ -42,7 +42,7 @@ export default {
     let jwt = localStorage.getItem('id_token')
     if (jwt) {
       this.user.authenticated = true
-      router.push('/tasks')
+      router.push('/projects')
     } else {
       this.user.authenticated = false
       router.push('/authenticate')

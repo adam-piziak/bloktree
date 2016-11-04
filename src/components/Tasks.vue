@@ -122,7 +122,7 @@ $creator-height: 40px
 
   .project-picker
     display: inline-block
-    width: 150px
+    width: 200px
     float: right
     background: white
 
@@ -136,6 +136,7 @@ $creator-height: 40px
       text-align: center
       height: 30px
       line-height: 30px
+      overflow: hidden
 
       &::first-letter
         text-transform: capitalize

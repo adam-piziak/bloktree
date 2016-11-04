@@ -25,7 +25,7 @@ export default {
 *
   margin: 0
   padding: 0
-  font-family: 'Raleway'
+  font-family: 'Open Sans'
 
 html, body
   height: 100%

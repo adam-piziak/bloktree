@@ -61,3 +61,32 @@ export const createTaskTree = () => {
   }
   return taskTree
 }
+
+const getAllProjectIds = () => {
+  const projects = store.getters.projects
+  let ids = []
+  for (let i in projects) {
+    ids.push(projects[i].id)
+  }
+  return ids
+}
+
+// Create a task tree sorted by project
+export const getTasksByProject = () => {
+  let root = getRoot() // get all root level tasks
+  let ids = getAllProjectIds() // get all project ids
+  let tasks = [] // initialize empty task array, this will be returned
+  for (let i in ids) {
+    let projectTasks = {
+      id: ids[i],
+      tasks: []
+    }
+    for (let a in root) {
+      if (ids[i] === root[a].project) {
+        projectTasks.tasks.push(root[a])
+      }
+    }
+    tasks.push(projectTasks)
+  }
+  return tasks
+}

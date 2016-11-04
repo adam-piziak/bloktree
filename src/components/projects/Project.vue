@@ -1,8 +1,10 @@
 <template>
   <div class='project'>
-    <span class="accent" :style="{ background: project.color }"></span>
     <div class="project-data">
-      <span class="project-name">{{ project.name }}</span>
+      <span class="project-name" :style="{'color': project.data.color}">{{ project.data.name }}</span>
+      <div class="project-tasks">
+        <span class="project-task" v-for="task in project.tasks" :style="{'color': project.data.color}">{{task.name}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -18,14 +20,13 @@ export default {
 
 <style scoped lang="sass">
 @import bourbon
-$height: 50px
+$height: 80px
 $width: 960px
 
 .project
   height: $height
   width: $width
-  background: white
-  line-height: $height
+  background: #FAFAFA
 
   &:hover
     background: #f6f6f6
@@ -34,18 +35,32 @@ $width: 960px
 .project-data
   vertical-align: top
   display: inline-block
-  margin-left: 10px
+  position: relative
+  width: $width
+  height: $height
+  border-bottom: 1px solid rgb(231, 230, 230)
 
   .project-name
-    font-size: 1em
+    font-size: 1.4em
     display: inline-block
+    position: absolute
+    top: 10px
+    left: 10px
 
     &::first-letter
       text-transform: capitalize
 
-.accent
-  position: absolute
-  display: inline-block
-  height: $height + 1px //for border
-  width: 2px
+  .project-tasks
+    position: absolute
+    bottom: 10px
+    left: 10px
+
+    .project-task
+      margin: 0
+
+      &::after
+        content: '|'
+
+      &:last-child::after
+        content: ''
 </style>

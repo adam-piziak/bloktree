@@ -2,29 +2,26 @@
   <div class="projects">
 
     <div class="creator">
+      <span class="color-picker"
+            :style="{ background: newProject.color.hex}">
+      </span>
       <input v-model='newProject.name'
              type="text"
              class="new-project-name"
              placeholder="add new project"
              @keydown.enter="createProject()" />
-      <div class="color-picker">
-        <span class="color"
-              @click="creator.colorPickerActive = !creator.colorPickerActive"
-              :style="{ color: newProject.color.hex}">
-              {{ newProject.color.name }}
-        </span>
+      <div class="colors">
         <span v-show="creator.colorPickerActive"
               v-for="color in projectColors"
               class="color"
-              @click="setNewProjectColor(color)"
-              :style="{ color: color.hex }">
-              {{ color.name}}
+              @click.stop="setNewProjectColor(color)"
+              :style="{ background: color.hex }">
         </span>
       </div>
     </div>
 
     <div class="projects-wrapper">
-      <Project v-for="project in projects" :project="project"></Project>
+      <Project v-for="project in projectBlocks" :project="project"></Project>
     </div>
   </div>
 </template>
@@ -45,7 +42,7 @@ export default {
         }
       },
       creator: {
-        colorPickerActive: false
+        colorPickerActive: true
       }
     }
   },
@@ -53,15 +50,32 @@ export default {
     Project
   },
   computed: {
+    projectBlocks () {
+      let all = []
+      for (let i in this.projects) {
+        let project = {
+          data: this.projects[i],
+          tasks: []
+        }
+        for (let a in this.tasksByProject) {
+          if (this.tasksByProject[a].id === this.projects[i].id) {
+            project.tasks = this.tasksByProject[a].tasks
+          }
+        }
+        all.push(project)
+      }
+      return all
+    },
     ...mapGetters([
       'projects',
-      'projectColors'
+      'projectColors',
+      'tasksByProject'
     ])
   },
   methods: {
     setNewProjectColor (data) {
       this.newProject.color = data
-      this.creator.colorPickerActive = false
+      // this.creator.colorPickerActive = false
     },
     createProject () {
       let project = this.newProject
@@ -76,22 +90,20 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$creator-height: 40px
+$creator-height: 50px
+$size: 35px
 .creator
-  height: $creator-height
   display: inline-block
-  margin-top: 10px
+  margin: 100px
   margin-left: 50%
   +transform(translateX(-50%))
-  background: pink
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2)
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .4)
   position: relative
   z-index: 10
-  border-radius: 5px
 
   .new-project-name
     height: $creator-height
-    width: 300px
+    width: (16*$size) - $creator-height
     text-indent: 10px
     vertical-align: top
     border: 0
@@ -99,29 +111,39 @@ $creator-height: 40px
 
   .color-picker
     display: inline-block
-    width: 150px
-    float: right
-    background: white
+    +size($creator-height)
+    float: left
+    background: blue
+
+    &:hover
+      cursor: pointer
+  .colors
+    display: block
+    width: 16*$size
+    height: $size
 
     .color
-      display: block
-      clear: both
-      padding: 0 10px
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+      display: inline-block
+      +size($size)
+      float: left
+      +transform-origin(center top)
       font:
         weight: 500
       text-align: center
-      height: 30px
       line-height: 30px
+      opacity: 0.9
+      z-index: 10
+      position: relative
+      +transition(.2s)
 
       &:first-child
         background: rgb(246, 246, 246)
-        height: $creator-height
-        line-height: $creator-height
 
       &:hover
         cursor: pointer
-        background: #eee
+        opacity: 1
+        z-index: 20
+        +transform(scale(1.5))
 
 
 .projects-wrapper

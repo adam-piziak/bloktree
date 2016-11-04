@@ -13,7 +13,6 @@ export const getTasks = (callback) => {
     if (!res.body.success) {
       callback(res.body.error)
     } else {
-      console.log(res.body.tasks)
       callback(null, res.body.tasks)
     }
   })
