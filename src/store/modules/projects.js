@@ -27,82 +27,82 @@ const state = {
     {
       id: 1,
       name: 'red',
-      hex: '#f44336'
+      hex: '#d32f2f'
     },
     {
       id: 2,
       name: 'pink',
-      hex: '#E91E63'
+      hex: '#C2185B'
     },
     {
       id: 3,
       name: 'purple',
-      hex: '#9C27B0'
+      hex: '#7B1FA2'
     },
     {
       id: 4,
       name: 'deep-purple',
-      hex: '#673AB7'
+      hex: '#512DA8'
     },
     {
       id: 5,
       name: 'indigo',
-      hex: '#3F51B5'
+      hex: '#303F9F'
     },
     {
       id: 6,
       name: 'blue',
-      hex: '#2196F3'
+      hex: '#1976D2'
     },
     {
       id: 7,
       name: 'light-blue',
-      hex: '#03A9F4'
+      hex: '#0288D1'
     },
     {
       id: 8,
       name: 'cyan',
-      hex: '#00BCD4'
+      hex: '#0097A7'
     },
     {
       id: 9,
       name: 'teal',
-      hex: '#009688'
+      hex: '#00796B'
     },
     {
       id: 10,
       name: 'green',
-      hex: '#4CAF50'
+      hex: '#388E3C'
     },
     {
       id: 11,
       name: 'light-green',
-      hex: '#8BC34A'
+      hex: '#689F38'
     },
     {
       id: 12,
       name: 'lime',
-      hex: '#CDDC39'
+      hex: '#AFB42B'
     },
     {
       id: 13,
       name: 'yellow',
-      hex: '#FFEB3B'
+      hex: '#FBC02D'
     },
     {
       id: 14,
       name: 'amber',
-      hex: '#FFC107'
+      hex: '#FFA000'
     },
     {
       id: 15,
       name: 'orange',
-      hex: '#FF9800'
+      hex: '#F57C00'
     },
     {
       id: 16,
       name: 'deep-orange',
-      hex: '#FF5722'
+      hex: '#E64A19'
     }
   ]
 }

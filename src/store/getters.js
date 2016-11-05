@@ -1,4 +1,4 @@
-import { createTaskTree, getTasksByProject } from '../lib/tasks/tools'
+import { createTaskTree, getTasksByProject } from '../lib/tasks/'
 
 export const tasks = state => state.tasks.all
 export const taskTrees = () => createTaskTree()

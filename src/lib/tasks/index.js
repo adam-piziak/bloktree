@@ -17,6 +17,23 @@ const getChildren = id => {
   let tasks = store.getters.tasks               // Get all tasks
   let children = []
   for (let i in tasks) {
+    if (tasks[i].parent === id) {
+      if (tasks[i].group === 0) {
+        const child = {
+          id: tasks[i].id,
+          name: tasks[i].name
+        }
+        children.push(child)
+      } else {
+        const child = {
+          id: tasks[i].id,
+          name: tasks[i].name,
+          children: getChildren(tasks[i].id)
+        }
+        children.push(child)
+      }
+    }
+    /*
     const isChild = tasks[i].parent === id      // Checks if task is child of parent
     const hasChildren = tasks[i].hasChildren    // Checks if task has children
     if (isChild && !hasChildren) {              // If task has NO children, add to variable children
@@ -32,7 +49,7 @@ const getChildren = id => {
         children: getChildren(tasks[i].id)
       }
       children.push(child)
-    }
+    } */
   }
   return children
 }
@@ -42,17 +59,19 @@ export const createTaskTree = () => {
   let root = getRoot()
   let taskTree = []
   for (let i in root) {
-    if (!root[i].hasChildren) {
+    if (root[i].mode === 0) {
       let task = {
         id: root[i].id,
         name: root[i].name,
+        mode: root[i].mode,
         project: root[i].project
       }
       taskTree.push(task)
-    } else if (root[i].hasChildren) {
+    } else if (root[i].mode === 1) {
       let task = {
         id: root[i].id,
         name: root[i].name,
+        mode: root[i].mode,
         project: root[i].project,
         children: getChildren(root[i].id)
       }

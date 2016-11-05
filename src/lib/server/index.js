@@ -1,6 +1,10 @@
-import Vue from 'vue'
+import axios from 'axios'
 
 const SERVER_URL = 'http://127.0.0.1:3000'
+
+const token = () => {
+  return localStorage.getItem('id_token')
+}
 
 export const getTasks = (callback) => {
   const URL = SERVER_URL + '/task/getAll'
@@ -9,13 +13,42 @@ export const getTasks = (callback) => {
     token
   }
 
-  Vue.http.post(URL, data).then((res) => {
-    if (!res.body.success) {
-      callback(res.body.error)
+  axios.post(URL, data).then((res) => {
+    if (!res.data.success) {
+      callback(res.data.error)
     } else {
-      callback(null, res.body.tasks)
+      callback(null, res.data.tasks)
     }
+  }).catch((err) => {
+    console.error(err)
   })
+}
+
+export const task = {
+  create (unit, callback) {
+    const URL = SERVER_URL + '/task/create'
+    const data = { token: token(), unit }
+    axios.post(URL, data).then((res) => {
+      if (!res.data.success) {
+        callback(res.data.error, false)
+      } else {
+        callback(null, true)
+      }
+    })
+  },
+  makeGroup (id, callback) {
+    const URL = SERVER_URL + '/task/makeGroup'
+    const data = {token: token(), id}
+    axios.post(URL, data).then((res) => {
+      if (!res.data.success) {
+        callback(res.data.error)
+      } else {
+        callback(null, true)
+      }
+    }).catch((err) => {
+      callback(err)
+    })
+  }
 }
 
 export const deleteTask = (id, callback) => {
@@ -26,12 +59,14 @@ export const deleteTask = (id, callback) => {
     taskId: id
   }
 
-  Vue.http.post(URL, data).then((res) => {
-    if (!res.body.success) {
-      callback(res.body.error)
+  axios.post(URL, data).then((res) => {
+    if (!res.data.success) {
+      callback(res.data.error)
     } else {
       callback(null, true)
     }
+  }).catch((err) => {
+    console.error(err)
   })
 }
 
@@ -39,12 +74,14 @@ export const createProject = (project, callback) => {
   const URL = SERVER_URL + '/project/create'
   const token = localStorage.getItem('id_token')
   const data = { project, token }
-  Vue.http.post(URL, data).then((res) => {
+  axios.post(URL, data).then((res) => {
     if (!res.body.success) {
       callback(res.body.error)
     } else {
       callback(null, true)
     }
+  }).catch((err) => {
+    console.error(err)
   })
 }
 
@@ -52,11 +89,11 @@ export const getAllProjects = callback => {
   const URL = SERVER_URL + '/project/getAll'
   const token = localStorage.getItem('id_token')
   const data = { token }
-  Vue.http.post(URL, data).then((res) => {
-    if (!res.body.success) {
-      callback(res.body.error)
+  axios.post(URL, data).then((res) => {
+    if (!res.data.success) {
+      callback(res.data.error)
     } else {
-      callback(null, res.body.projects)
+      callback(null, res.data.projects)
     }
   })
 }

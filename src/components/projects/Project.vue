@@ -20,13 +20,13 @@ export default {
 
 <style scoped lang="sass">
 @import bourbon
-$height: 80px
+$height: 50px
 $width: 960px
 
 .project
   height: $height
   width: $width
-  background: #FAFAFA
+  background: #fefefe
 
   &:hover
     background: #f6f6f6
@@ -41,10 +41,10 @@ $width: 960px
   border-bottom: 1px solid rgb(231, 230, 230)
 
   .project-name
-    font-size: 1.4em
+    font-size: 1em
     display: inline-block
     position: absolute
-    top: 10px
+    top: 5px
     left: 10px
 
     &::first-letter
@@ -52,8 +52,9 @@ $width: 960px
 
   .project-tasks
     position: absolute
-    bottom: 10px
+    bottom: 5px
     left: 10px
+    font-size: .7em
 
     .project-task
       margin: 0

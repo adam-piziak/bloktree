@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import auth from '../auth'
 
-import Tasks from '../components/Tasks'
-import Projects from '../components/Projects'
+import Tasks from '../components/tasks/TasksPage'
+import Projects from '../components/projects/ProjectsPage'
 import AuthPage from '../components/auth/Auth'
 import NotFound from '../components/error/NotFound.vue'
 import Main from '../components/Main.vue'
@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
-    next() // make sure to always call next()!
+    next()
   }
 })
 

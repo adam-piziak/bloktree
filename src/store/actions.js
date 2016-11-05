@@ -1,27 +1,20 @@
-import Vue from 'vue'
 import * as types from './mutations-types'
 import * as server from '../lib/server/index'
-const API_URL = 'http://127.0.0.1:3000'
 
 export const createTask = ({ commit }, taskData) => {
-  const token = localStorage.getItem('id_token')
   let task = {
     name: taskData.name,
     parent: taskData.parent,
     project: taskData.project,
-    hasChildren: taskData.hasChildren,
+    mode: taskData.mode,
     priority: 1
   }
-  const data = {
-    token,
-    task
-  }
-  Vue.http.post((API_URL + '/task/create'), data).then((res) => {
-    if (res.body.success) {
+  server.task.create(task, (err) => {
+    if (err) {
+      console.error(err)
+    } else {
       commit(types.CREATE_TASK, { task })
     }
-  }, (err) => {
-    console.error('ERROR: ' + JSON.stringify(err))
   })
 }
 
@@ -50,7 +43,13 @@ export const deleteTask = ({ commit }, id) => {
 }
 
 export const makeGroup = ({ commit }, id) => {
-  commit(types.MAKE_GROUP, { id })
+  server.task.makeGroup(id, (err, success) => {
+    if (err) {
+      console.error(err)
+    } else {
+      commit(types.MAKE_GROUP, { id })
+    }
+  })
 }
 
 export const createProject = ({ commit }, project) => {

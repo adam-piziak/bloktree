@@ -74,7 +74,7 @@ export default {
   props: ['task', 'projects'],
   computed: {
     hasChildren () {
-      if (this.task.children) {
+      if (this.task.mode === 1) {
         return true
       }
       return false
@@ -92,7 +92,6 @@ export default {
           color = this.projects[i].color
         }
       }
-      console.log(color)
       return color
     },
     projectName () {
@@ -113,8 +112,8 @@ export default {
       const task = {
         name: name,
         parent: this.task.id,
-        hasChildren: false,
-        project: null
+        mode: 0,
+        project: this.task.project
       }
       this.$store.dispatch('createTask', task)
       this.newTask.name = ''
@@ -136,9 +135,12 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$height: 40px
+$height: 45px
 $sub-task-creator-height: 40px
 $assets: '../../assets/'
+$project-font-size: 0.6em
+$name-font-size: .8em
+
 .task
   background: rgb(255, 255, 255)
   min-height: $height
@@ -190,7 +192,7 @@ $assets: '../../assets/'
     image: url($assets + 'icons/group.svg')
     position: center center
     repeat: no-repeat
-    size: 55%
+    size: 50%
 .task-data
   display: inline-block
   height: $height
@@ -218,18 +220,18 @@ $assets: '../../assets/'
     height: (1/4)*$height
     line-height: (1/4)*$height
     margin-top: (1/8)*$height
-    font-size: .6em
+    font-size: $project-font-size
 
   .task-name.root
     height: (1/2)*$height
     line-height: (1/2)*$height
     margin-bottom: (1/8)*$height
-    font-size: .7em
+    font-size: $name-font-size
 
   .task-name.child
     height: $height
     line-height: $height
-    font-size: .7em
+    font-size: $name-font-size
 
 .children-wrapper
   margin-left: 5px
@@ -237,7 +239,7 @@ $assets: '../../assets/'
   & > .task
     min-height: 0
     max-height: 0px
-    +transition(200ms)
+    //+transition(200ms)
 
   & > .sub-task-creator
     height: 0px
@@ -248,7 +250,7 @@ $assets: '../../assets/'
     min-height: 0px
     height: 0
     max-height: 0px
-    +transition(200ms)
+    //+transition(200ms)
 
   &.open > .task
     min-height: $height

@@ -33,7 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Task from './tasks/Task.vue'
+import Task from './Task.vue'
 
 export default {
   name: 'Tasks',
@@ -43,7 +43,7 @@ export default {
         name: '',
         parent: 0,
         project: 1,
-        hasChildren: false,
+        mode: 0,
         priority: 0
       },
       creator: {

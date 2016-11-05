@@ -42,7 +42,7 @@ export default {
     let jwt = localStorage.getItem('id_token')
     if (jwt) {
       this.user.authenticated = true
-      router.push('/projects')
+      router.push('/tasks')
     } else {
       this.user.authenticated = false
       router.push('/authenticate')

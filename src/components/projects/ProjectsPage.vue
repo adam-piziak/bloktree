@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Project from './projects/Project.vue'
+import Project from './Project.vue'
 export default {
   name: 'Projects',
   data () {
@@ -90,11 +90,11 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$creator-height: 50px
-$size: 35px
+$creator-height: 35px
+$size: 25px
 .creator
   display: inline-block
-  margin: 100px
+  margin: 20px 0
   margin-left: 50%
   +transform(translateX(-50%))
   box-shadow: 0 2px 3px rgba(0, 0, 0, .4)
@@ -153,5 +153,5 @@ $size: 35px
   margin-top: 10px
   +transform(translateX(-50%))
   width: 960px
-  box-shadow: 0 2px 2px rgba(0,0,0,.2)
+  box-shadow: 0 3px 5px rgba(0,0,0,.2)
 </style>
