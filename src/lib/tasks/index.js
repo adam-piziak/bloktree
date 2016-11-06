@@ -37,6 +37,34 @@ const getChildren = id => {
   return children
 }
 
+const maxPriority = () => {
+  const root = getRoot()
+  let max = 0
+  for (let i in root) {
+    if (root[i].priority > max) {
+      max = root[i].priority
+    }
+  }
+  return max
+}
+
+export const createPriorityTree = () => {
+  const trees = createTaskTree()
+  const priorityTree = []
+  const max = maxPriority()
+  // console.log(trees)
+  for (let i = 0; i <= max; i++) {
+    let block = []
+    for (let t in trees) {
+      if (trees[t].priority === i) {
+        block.push(trees[t])
+      }
+    }
+    priorityTree.push(block)
+  }
+  return priorityTree
+}
+
 // Create json task tree from flat array of json tasks
 export const createTaskTree = () => {
   let root = getRoot()
@@ -47,6 +75,7 @@ export const createTaskTree = () => {
         id: root[i].id,
         name: root[i].name,
         mode: root[i].mode,
+        priority: root[i].priority,
         project: root[i].project
       }
       taskTree.push(task)
@@ -56,6 +85,7 @@ export const createTaskTree = () => {
         name: root[i].name,
         mode: root[i].mode,
         project: root[i].project,
+        priority: root[i].priority,
         children: getChildren(root[i].id)
       }
       taskTree.push(task)

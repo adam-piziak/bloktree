@@ -80,6 +80,7 @@ export default {
     },
     ...mapGetters({
       tasks: 'taskTrees',
+      priorityTree: 'priorityTree',
       projects: 'projects'
     })
   },
