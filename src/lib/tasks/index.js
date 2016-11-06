@@ -33,23 +33,6 @@ const getChildren = id => {
         children.push(child)
       }
     }
-    /*
-    const isChild = tasks[i].parent === id      // Checks if task is child of parent
-    const hasChildren = tasks[i].hasChildren    // Checks if task has children
-    if (isChild && !hasChildren) {              // If task has NO children, add to variable children
-      const child = {
-        id: tasks[i].id,
-        name: tasks[i].name
-      }
-      children.push(child)
-    } else if (isChild && hasChildren) {        // If task has children, gets it children first
-      const child = {
-        id: tasks[i].id,
-        name: tasks[i].name,
-        children: getChildren(tasks[i].id)
-      }
-      children.push(child)
-    } */
   }
   return children
 }
