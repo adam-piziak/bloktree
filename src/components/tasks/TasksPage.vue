@@ -25,7 +25,10 @@
 
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
-      <Task v-for="task in tasks" :task="task" :projects="projects"></Task>
+      <div v-for="(priority, index) in priorityTree" v-if="priority.length > 0"class="priority">
+        <h1>priority {{index}}</h1>
+        <Task v-for="task in priority" :task="task" :projects="projects"></Task>
+      </div>
     </div>
 
   </div>
@@ -151,13 +154,21 @@ $creator-height: 40px
         cursor: pointer
         background: #eee
 
-
+.priority
+  box-shadow: 0 2px 2px rgba(0,0,0,.2)
+  margin-top: 40px
+  position: relative
+  h1
+    position: absolute
+    font:
+      weight: 400
+      size: 1em
+    top: -30px
 .tasks-wrapper
   margin-left: 50%
   margin-top: 10px
   +transform(translateX(-50%))
   width: 960px
-  box-shadow: 0 2px 2px rgba(0,0,0,.2)
   position: relative
   z-index: 5
 
