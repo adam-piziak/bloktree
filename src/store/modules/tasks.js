@@ -11,6 +11,7 @@ const mutations = {
       name: task.name,
       parent: task.parent,
       mode: task.mode,
+      priority: task.priority,
       project: task.project
     }
     state.all.push(unit)

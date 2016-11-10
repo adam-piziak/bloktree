@@ -16,8 +16,8 @@ export default {
   data () {
     return {
       credentials: {
-        username: 'adam',
-        password: 'fractalfeels'
+        username: '',
+        password: ''
       }
     }
   },

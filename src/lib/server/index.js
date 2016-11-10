@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-const SERVER_URL = 'http://127.0.0.1:3000'
+import { SERVER_URL } from './loc'
 
 const token = () => {
   return localStorage.getItem('id_token')
@@ -14,6 +13,7 @@ export const getTasks = (callback) => {
   }
 
   axios.post(URL, data).then((res) => {
+    console.log(res.data)
     if (!res.data.success) {
       callback(res.data.error)
     } else {
@@ -29,6 +29,7 @@ export const task = {
     const URL = SERVER_URL + '/task/create'
     const data = { token: token(), unit }
     axios.post(URL, data).then((res) => {
+      console.log(res.data)
       if (!res.data.success) {
         callback(res.data.error, false)
       } else {

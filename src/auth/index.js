@@ -1,6 +1,8 @@
 import router from '../router'
+import axios from 'axios'
+import { SERVER_URL } from '../lib/server/loc'
 
-const API_URL = 'http://127.0.0.1:3000'
+const API_URL = SERVER_URL
 const LOGIN_URL = API_URL + '/authenticate'
 const SIGNUP_URL = API_URL + '/signup'
 
@@ -11,17 +13,20 @@ export default {
   },
 
   login (context, creds, redirect) {
-    console.log('Logging in')
-    context.$http.post(LOGIN_URL, creds).then((data) => {
-      localStorage.setItem('id_token', data.body.id_token)
-      this.user.authenticated = true
-      router.push('/projects')
+    axios.post(LOGIN_URL, creds).then((res) => {
+      if (!res.data.success) {
+        console.log(res.data.message)
+      } else {
+        localStorage.setItem('id_token', res.data.id_token)
+        this.user.authenticated = true
+        router.push('/tasks')
+      }
     })
   },
 
   signup (context, creds, redirect) {
-    context.$http.post(SIGNUP_URL, creds, (data) => {
-      localStorage.setItem('id_token', data.id_token)
+    axios.post(SIGNUP_URL, creds, (res) => {
+      localStorage.setItem('id_token', res.data.id_token)
 
       this.user.authenticated = true
 
