@@ -22,10 +22,12 @@ export default {
 
 #main
   min-height: 100vh
-  background: rgb(253, 253, 253)
+  background: rgb(242, 242, 242)
 header
   letter-spacing: .01em
   height: 50px
+  background: white
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2)
 
 nav
   display: inline-block

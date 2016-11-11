@@ -20,7 +20,6 @@ export const createTask = ({ commit }, taskData) => {
 
 export const setAllTasks = ({ commit }) => {
   server.getTasks((err, tasks) => {
-    console.log(tasks)
     if (err) {
       console.error(err)
     } else {

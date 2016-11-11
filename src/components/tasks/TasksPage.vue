@@ -1,28 +1,9 @@
 <template>
   <div class="tasks">
 
-    <div class="creator">
-      <input v-model='newTask.name'
-      type="text"
-      class="new-task-input"
-      placeholder="add new task"
-      @keydown.enter="createTask()" />
-      <div class="project-picker">
-        <span class="project"
-              @click="creator.projectPickerActive = !creator.projectPickerActive"
-              :style="{ color: projectColor}">
-              {{ projectName }}
-        </span>
-        <span v-show="creator.projectPickerActive"
-              v-for="project in projects"
-              class="project"
-              @click="setNewProject(project.id)"
-              :style="{ color: project.color }">
-              {{ project.name}}
-        </span>
-      </div>
-    </div>
+    <Creator></Creator>
 
+    <!--
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
       <div v-for="(priority, index) in priorityTree" v-if="priority.length > 0"class="priority">
@@ -30,13 +11,14 @@
         <Task v-for="task in priority" :task="task" :projects="projects"></Task>
       </div>
     </div>
-
+    -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Task from './Task.vue'
+import Creator from './Creator.vue'
 
 export default {
   name: 'Tasks',
@@ -55,7 +37,8 @@ export default {
     }
   },
   components: {
-    Task
+    Task,
+    Creator
   },
   computed: {
     project () {
@@ -110,9 +93,7 @@ $creator-height: 40px
 .creator
   display: inline-block
   height: $creator-height
-  margin-left: 50%
-  +transform(translateX(-50%))
-  margin-top: 10px
+  margin-top: 40px
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2)
   position: relative
   z-index: 10
