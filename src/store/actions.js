@@ -7,7 +7,7 @@ export const createTask = ({ commit }, taskData) => {
     parent: taskData.parent,
     project: taskData.project,
     mode: taskData.mode,
-    priority: 1
+    priority: taskData.priority
   }
   server.task.create(task, (err) => {
     if (err) {

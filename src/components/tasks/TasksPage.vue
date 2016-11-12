@@ -3,7 +3,6 @@
 
     <Creator></Creator>
 
-    <!--
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
       <div v-for="(priority, index) in priorityTree" v-if="priority.length > 0"class="priority">
@@ -11,7 +10,7 @@
         <Task v-for="task in priority" :task="task" :projects="projects"></Task>
       </div>
     </div>
-    -->
+
   </div>
 </template>
 
@@ -89,62 +88,21 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
-$creator-height: 40px
-.creator
-  display: inline-block
-  height: $creator-height
-  margin-top: 40px
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2)
-  position: relative
-  z-index: 10
-
-  .new-task-input
-    height: $creator-height
-    width: 300px
-    text-indent: 10px
-    border: 0
-    outline: 0
-
-  .project-picker
-    display: inline-block
-    width: 200px
-    float: right
-    background: white
-
-    .project
-      display: block
-      clear: both
-      padding: 0 10px
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1)
-      font:
-        weight: 500
-      text-align: center
-      height: 30px
-      line-height: 30px
-      overflow: hidden
-
-      &::first-letter
-        text-transform: capitalize
-
-      &:first-child
-        background: rgb(246, 246, 246)
-        height: $creator-height
-        line-height: $creator-height
-
-      &:hover
-        cursor: pointer
-        background: #eee
-
 .priority
   box-shadow: 0 2px 2px rgba(0,0,0,.2)
-  margin-top: 40px
+  margin-top: 60px
   position: relative
+
+  &:first-child
+    margin-top: 40px
   h1
     position: absolute
     font:
       weight: 400
-      size: 1em
-    top: -30px
+      size: .9em
+    top: -25px
+    text-transform: capitalize
+    opacity: 0.7
 .tasks-wrapper
   margin-left: 50%
   margin-top: 10px
