@@ -1,5 +1,11 @@
 <template>
-  <div class="task" @click="setState()":class="{group: hasChildren}" @click.stop="state.expand = !state.expand">
+  <div class="task"
+       draggable="true"
+       @dragstart="dragStart"
+       @dragend="dragEnd"
+       @click="setState()"
+       :class="{group: hasChildren}"
+       @click.stop="state.expand = !state.expand">
     <span v-if="isRoot" class="accent" :style="{ background: projectColor }"></span>
     <div class="core">
       <div class="done-checkbox"
@@ -35,7 +41,7 @@
       <span v-if="hasChildren"
             class="expand"
             :class="{open: state.expand}"></span>
-      <span class="border-bottom"></span>
+      <!-- <span class="border-bottom"></span> -->
     </div>
     <div v-if="hasChildren" class="children-wrapper" :class="{open: state.expand }">
       <Task v-for="task in task.children" :task="task"></Task>
@@ -45,7 +51,7 @@
                @click.stop
                @keydown.enter="createTask(newTask.name)"
                v-model="newTask.name" >
-      <span class="border-bottom"></span>
+      <!-- <span class="border-bottom"></span> -->
       </div>
     </div>
   </div>
@@ -105,8 +111,14 @@ export default {
     }
   },
   methods: {
+    dragEnd (e) {
+      this.$emit('dragEnd')
+    },
+    dragStart () {
+      this.$emit('dragStart', this.task)
+    },
     setState () {
-      this.state.edit = false
+      this.$store.dispatch('setActiveTask', this.task.id)
     },
     createTask (name) {
       const task = {

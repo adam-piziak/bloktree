@@ -5,12 +5,24 @@
 
     <p v-if="noTasks" class="no-tasks-message">No tasks added yet</p>
     <div else class="tasks-wrapper">
-      <div v-for="(priority, index) in priorityTree" v-if="priority.length > 0"class="priority">
+
+      <div v-for="(priority, index) in priorityTree"
+           v-if="priority.length > 0"
+           @drop="drop(index)"
+           @dragover.prevent = 'drag.over = index'
+           @dragleave.prevent = 'drag.over = 0'
+           :class="{'dropover': index === drag.over }"
+           class="priority">
+
         <h1>priority {{index}}</h1>
-        <Task v-for="task in priority" :task="task" :projects="projects"></Task>
+
+        <Task v-for="task in priority"
+              @dragEnd = 'dragEnd'
+              @dragStart = 'dragStart'
+              :task="task"
+              :projects="projects"></Task>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -32,6 +44,10 @@ export default {
       },
       creator: {
         projectPickerActive: false
+      },
+      drag: {
+        over: 0,
+        taskData: {}
       }
     }
   },
@@ -56,6 +72,24 @@ export default {
     projectColor () {
       return this.project.color
     },
+    active () {
+      let id = 1
+      if (this.activeTask === null) {
+        id = 1
+      } else {
+        id = this.activeTask.id
+      }
+      let task = this.tasks.find(unit => unit.id === id)
+      if (!task) {
+        return {
+          name: 'undefined task',
+          color: 'gray',
+          id: 0
+        }
+      } else {
+        return task
+      }
+    },
     noTasks () {
       if (this.tasks.length === 0) {
         return true
@@ -66,10 +100,28 @@ export default {
     ...mapGetters({
       tasks: 'taskTrees',
       priorityTree: 'priorityTree',
-      projects: 'projects'
+      projects: 'projects',
+      activeTask: 'activeTask'
     })
   },
   methods: {
+    drop (p) {
+      let task = this.drag.taskData
+      task.priority = this.drag.over
+      console.log(task)
+      this.$store.dispatch('editTask', task)
+      this.dragEnd()
+    },
+    dragEnd () {
+      let comp = this
+      setTimeout(function () {
+        comp.drag.over = 0
+        comp.drag.taskData = {}
+      }, 100)
+    },
+    dragStart (taskData) {
+      this.drag.taskData = taskData
+    },
     setNewProject (id) {
       this.newTask.project = id
       this.creator.projectPickerActive = false
@@ -93,6 +145,8 @@ export default {
   margin-top: 60px
   position: relative
 
+  &.dropover
+    outline: 1px solid black
   &:first-child
     margin-top: 40px
   h1

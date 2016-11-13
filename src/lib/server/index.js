@@ -13,7 +13,6 @@ export const getTasks = (callback) => {
   }
 
   axios.post(URL, data).then((res) => {
-    console.log(res.data)
     if (!res.data.success) {
       callback(res.data.error)
     } else {

@@ -1,7 +1,10 @@
 import * as types from '../mutations-types'
 
 const state = {
-  all: []
+  all: [],
+  active: {
+    id: null
+  }
 }
 
 const mutations = {
@@ -22,9 +25,17 @@ const mutations = {
     for (let i in all) {
       if (all[i].id === edit.id) {
         all[i].name = edit.name
+        all[i].parent = edit.parent
+        all[i].mode = edit.mode
+        all[i].priority = edit.priority
+        all[i].project = edit.project
         break
       }
     }
+  },
+
+  [types.SET_ACTIVE_TASK] (state, { id }) {
+    state.active.id = id
   },
 
   [types.MAKE_GROUP] (state, { id }) {

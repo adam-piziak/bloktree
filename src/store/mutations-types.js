@@ -9,6 +9,7 @@ export const EDIT_TASK = 'EDIT_TASK'
 export const SERVER_EDIT_TASK = 'SERVER_EDIT_TASK'
 
 export const SET_ALL_TASKS = 'SET_ALL_TASKS'
+export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK'
 // //
 
 export const MAKE_GROUP = 'MAKE_GROUP'

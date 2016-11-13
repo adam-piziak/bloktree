@@ -76,6 +76,7 @@ export const createTaskTree = () => {
         name: root[i].name,
         mode: root[i].mode,
         priority: root[i].priority,
+        parent: root[i].parent,
         project: root[i].project
       }
       taskTree.push(task)
@@ -85,6 +86,7 @@ export const createTaskTree = () => {
         name: root[i].name,
         mode: root[i].mode,
         project: root[i].project,
+        parent: root[i].parent,
         priority: root[i].priority,
         children: getChildren(root[i].id)
       }

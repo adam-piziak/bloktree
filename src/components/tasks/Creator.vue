@@ -181,7 +181,7 @@ $c-width: 550px
       .priority
         height: $c-height
         line-height: $c-height
-        width: ($c-width / 15.3)
+        width: (($c-width -$c-height) / 14)
         text-align: center
         color: rgb(84, 84, 84)
         display: inline-block
