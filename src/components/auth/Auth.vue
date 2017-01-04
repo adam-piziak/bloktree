@@ -1,17 +1,35 @@
 <template >
   <div class="auth-page">
-    <p class="auth-title">BlokTree</p>
+    <p class="auth-title">Blok<span class="tree">Tree</span></p>
+    <p class="description">Prioritize tasks and projects</p>
+    <div class="signin-wrapper">
+      <div class="signin">
+        <input class="input-username"
+               placeholder="Username"
+               autofocus="autofocus"
+               v-model="credentials.username"
+               @keyup="checkUser"
+        >
+        <input class="button-auth" type="button" value="Next"/>
+        </input>
+      </div>
+    </div>
+    <!--
     <div class="signin-wrapper">
       <input type="text" v-model="credentials.username" placeholder="username" maxlength="50" class="i-auth-text" autofocus="autofocus">
       <input type="password" v-model="credentials.password" placeholder="password" maxlength="50" class="i-auth-text">
       <input type="button" value="Login" class="i-auth-submit" @click="submit">
     </div>
-    <div class="overlay"></div>
+  -->
+  <div class="graphic"></div>
   </div>
 
 </template>
 <script>
 import auth from '../../auth'
+import * as server from '../../lib/server/index'
+let typingTimer
+let time = 5000
 export default {
   data () {
     return {
@@ -24,17 +42,52 @@ export default {
   methods: {
     submit () {
       auth.login(this, this.credentials, '/')
+    },
+    checkUser () {
+      clearTimeout(typingTimer)
+      typingTimer = setTimeout(
+        server.user.check(this.credentials.username, (err, exists) => {
+          if (err) {
+            console.error(err)
+          } else if (exists) {
+            console.log('user exists!')
+          } else {
+            console.log('user does not exist.')
+          }
+        }),
+        time)
     }
   }
 }
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 @import "bourbon"
 
-$background: rgb(250, 250, 250)
+$background: #252525
 $font-size: .9em
+$assets: '../../assets/'
 
+.description
+  color: white
+  opacity: 0.9
+  //letter-spacing: 0.0em
+  font-weight: 600
+  position: absolute
+  top: 380px
+  left: 220px
+  z-index: 10
+
+.graphic
+  height: 100%
+  width: 100%
+  background:
+    color: transparent
+    image: url($assets + 'graphic.svg')
+    size: 100%
+  position: absolute
+  top: 0
+  z-index: 0
 .auth-page
   height: 100%
   background: $background
@@ -44,16 +97,85 @@ $font-size: .9em
 
 .auth-title
   text-align: center
-  color: rgb(147, 144, 144)
+  color: #d5d5d5
   width: 100%
   z-index: 10
-  margin-top: 10px
+  opacity: 1
+  margin-top: 100px
   font:
-    size: 8em
+    size: 6em
+
+.tree
+  color: #0fd524
 
   &:hover
     cursor: default
+
+$height: 100px
+$width: 300px
+
 .signin-wrapper
+  display: block
+  position: absolute
+  background: transparent
+  height: $height
+  width: $width
+  top: 370px
+  left: 50%
+  +transform(translateX(-50%))
+  overflow: hidden
+  z-index: 100
+
+  .signin
+    display: block
+    position: relative
+    background: transparent
+    height: $height
+    width: $width
+
+  .input-username
+    width: 100%
+    height: 38px
+    outline: 0
+    border: 0
+    display: block
+    position: relative
+    border-radius: 2px
+    text-indent: 10px
+    font-weight: 600
+    color: rgb(228, 228, 228)
+    letter-spacing: .05em
+    left: 50%
+    +transform(translateX(-50%))
+    background: rgba(255, 255, 255, 0.1)
+    +transition(background .3s, box-shadow .3s, color .3s)
+
+    &:focus
+      background: rgb(240, 239, 239)
+      color: rgb(59, 59, 59)
+      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3)
+
+  .button-auth
+    margin-top: 10px
+    width: 100%
+    height: 38px
+    font-weight: 600
+    outline: 0
+    border: 0
+    opacity: 0
+    background: rgb(230, 230, 230)
+    color: rgb(50, 50, 50)
+
+    &:hover
+      cursor: pointer
+
+    &:active
+      background: rgb(255, 255, 255)
+
+
+
+
+/*.signin-wrapper
   display: inline-block
   position: absolute
   z-index: 15
@@ -102,13 +224,4 @@ $font-size: .9em
       color: #eee
       box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2)
 
-$block-width: 2000px
-.overlay
-  +size($block-width)
-  background: rgba(41, 41, 41, 0.1)
-  z-index: 5
-  position: absolute
-  right: 0
-  bottom: -1500px
-  +transform(rotateZ(20deg))
 </style>

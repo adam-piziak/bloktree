@@ -28,12 +28,14 @@ export const setAllTasks = ({ commit }) => {
   })
 }
 
-export const setActiveTask = ({ commit }, id) => {
-  commit(types.SET_ACTIVE_TASK, { id })
-}
-
 export const editTask = ({ commit }, edit) => {
-  commit(types.EDIT_TASK, { edit })
+  server.task.edit(edit, (err) => {
+    if (!err) {
+      commit(types.EDIT_TASK, { edit })
+    } else {
+      console.error('ERROR:' + err)
+    }
+  })
 }
 
 export const deleteTask = ({ commit }, id) => {

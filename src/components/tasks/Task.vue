@@ -41,7 +41,7 @@
       <span v-if="hasChildren"
             class="expand"
             :class="{open: state.expand}"></span>
-      <!-- <span class="border-bottom"></span> -->
+      <span class="border-bottom"></span>
     </div>
     <div v-if="hasChildren" class="children-wrapper" :class="{open: state.expand }">
       <Task v-for="task in task.children" :task="task"></Task>
@@ -51,7 +51,7 @@
                @click.stop
                @keydown.enter="createTask(newTask.name)"
                v-model="newTask.name" >
-      <!-- <span class="border-bottom"></span> -->
+      <span class="border-bottom"></span>
       </div>
     </div>
   </div>
@@ -114,7 +114,8 @@ export default {
     dragEnd (e) {
       this.$emit('dragEnd')
     },
-    dragStart () {
+    dragStart (e) {
+      e.dataTransfer.setData('text/plain', e.target.id) // Must be set for Firefox
       this.$emit('dragStart', this.task)
     },
     setState () {

@@ -23,6 +23,24 @@ export const getTasks = (callback) => {
   })
 }
 
+export const user = {
+  check (username, callback) {
+    const URL = SERVER_URL + '/user/check'
+    const data = { username }
+    axios.post(URL, data).then((res) => {
+      if (!res.data.success && res.data.err) {
+        callback(true, null)
+      } else if (!res.data.success && !res.data.err) {
+        callback(null, false)
+      } else if (res.data.success) {
+        callback(null, true)
+      } else {
+        callback(true, null)
+      }
+    })
+  }
+}
+
 export const task = {
   create (unit, callback) {
     const URL = SERVER_URL + '/task/create'
@@ -36,6 +54,22 @@ export const task = {
       }
     })
   },
+
+  edit (edit, callback) {
+    const URL = SERVER_URL + '/task/edit'
+    const data = { token: token(), edit }
+    console.log(edit)
+    console.log(!edit.name || !edit.parent || !edit.project || !edit.mode || !edit.priority)
+    axios.post(URL, data).then((res) => {
+      if (res.data.error) {
+        console.error('ERROR: ' + res.data.error)
+        callback(res.data.error)
+      } else {
+        callback(null)
+      }
+    })
+  },
+
   makeGroup (id, callback) {
     const URL = SERVER_URL + '/task/makeGroup'
     const data = {token: token(), id}
@@ -49,6 +83,7 @@ export const task = {
       callback(err)
     })
   }
+
 }
 
 export const deleteTask = (id, callback) => {

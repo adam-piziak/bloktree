@@ -1,10 +1,7 @@
 import * as types from '../mutations-types'
 
 const state = {
-  all: [],
-  active: {
-    id: null
-  }
+  all: []
 }
 
 const mutations = {
@@ -32,10 +29,6 @@ const mutations = {
         break
       }
     }
-  },
-
-  [types.SET_ACTIVE_TASK] (state, { id }) {
-    state.active.id = id
   },
 
   [types.MAKE_GROUP] (state, { id }) {

@@ -7,11 +7,8 @@
     <div else class="tasks-wrapper">
 
       <div v-for="(priority, index) in priorityTree"
-           v-if="priority.length > 0"
-           @drop="drop(index)"
-           @dragover.prevent = 'drag.over = index'
-           @dragleave.prevent = 'drag.over = 0'
-           :class="{'dropover': index === drag.over }"
+           v-if="(priority.length > 0 || drag.active) && index != 0"
+           :class="{'dropover': index === drag.over, 'active': drag.active }"
            class="priority">
 
         <h1>priority {{index}}</h1>
@@ -21,6 +18,11 @@
               @dragStart = 'dragStart'
               :task="task"
               :projects="projects"></Task>
+
+        <div @drop="drop(index)"
+             @dragover.prevent = 'drag.over = index'
+             @dragleave.prevent = 'drag.over = 0'
+             class="drop-wrapper"></div>
       </div>
     </div>
   </div>
@@ -47,6 +49,7 @@ export default {
       },
       drag: {
         over: 0,
+        active: false,
         taskData: {}
       }
     }
@@ -72,24 +75,6 @@ export default {
     projectColor () {
       return this.project.color
     },
-    active () {
-      let id = 1
-      if (this.activeTask === null) {
-        id = 1
-      } else {
-        id = this.activeTask.id
-      }
-      let task = this.tasks.find(unit => unit.id === id)
-      if (!task) {
-        return {
-          name: 'undefined task',
-          color: 'gray',
-          id: 0
-        }
-      } else {
-        return task
-      }
-    },
     noTasks () {
       if (this.tasks.length === 0) {
         return true
@@ -100,15 +85,13 @@ export default {
     ...mapGetters({
       tasks: 'taskTrees',
       priorityTree: 'priorityTree',
-      projects: 'projects',
-      activeTask: 'activeTask'
+      projects: 'projects'
     })
   },
   methods: {
     drop (p) {
       let task = this.drag.taskData
       task.priority = this.drag.over
-      console.log(task)
       this.$store.dispatch('editTask', task)
       this.dragEnd()
     },
@@ -117,10 +100,15 @@ export default {
       setTimeout(function () {
         comp.drag.over = 0
         comp.drag.taskData = {}
+        comp.drag.active = false
       }, 100)
     },
     dragStart (taskData) {
       this.drag.taskData = taskData
+      let comp = this
+      setTimeout(function () {
+        comp.drag.active = true
+      }, 20)
     },
     setNewProject (id) {
       this.newTask.project = id
@@ -140,13 +128,26 @@ export default {
 <style scoped lang="sass">
 @import bourbon
 
+.drop-wrapper
+  position: absolute
+  top: 0
+  left: 0
+  +size(0)
 .priority
   box-shadow: 0 2px 2px rgba(0,0,0,.2)
+  min-height: 45px
   margin-top: 60px
   position: relative
+  background: rgba(255, 255, 255, 0.5)
 
-  &.dropover
-    outline: 1px solid black
+  &.active .drop-wrapper
+    +size(100%)
+    min-height: 45px
+
+  &.dropover .drop-wrapper
+    background: rgba(0, 254, 3, 0.025)
+    outline: 1px solid green
+
   &:first-child
     margin-top: 40px
   h1
