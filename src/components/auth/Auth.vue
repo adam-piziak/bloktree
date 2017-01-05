@@ -1,27 +1,43 @@
 <template >
   <div class="auth-page">
-    <p class="auth-title">Blok<span class="tree">Tree</span></p>
-    <p class="description">Prioritize tasks and projects</p>
+    <header :class="{'premount': !mounted}">
+      <span @click="presentLoginForm">Log in</span>
+      <span @click="presentSignupForm">create account</span>
+    </header>
+    <p class="auth-title" :class="{'premount': !mounted}">Blok<span class="tree">Tree</span></p>
+    <p class="description":class="{'premount': !mounted}">Prioritize tasks and projects</p>
     <div class="signin-wrapper">
-      <div class="signin">
-        <input class="input-username"
-               placeholder="Username"
-               autofocus="autofocus"
-               v-model="credentials.username"
-               @keyup="checkUser"
-        >
-        <input class="button-auth" type="button" value="Next"/>
-        </input>
+      <div class="signin" :class="{'signup': action.signup, 'login': action.login, 'active': action.login || action.signup}">
+        <input v-model="credentials.username"
+               class="text-input username"
+               type="text"
+               placeholder="username"
+               autofocus="autofocus"></input>
+        <input v-model="credentials.password"
+               class="text-input username"
+               type="password"
+               @keyup.enter="performAction"
+               placeholder="password"></input>
+        <input v-model="credentials.code"
+               v-show="action.signup"
+               class="text-input username"
+               type="text"
+               placeholder="invitation code"></input>
       </div>
+        <input class="button submit"
+               :class="{'premount': !mounted, 'signup': action.signup, 'login': action.login}"
+               type="button"
+               :value="buttonText"
+               @click="performAction"/>
     </div>
-    <!--
-    <div class="signin-wrapper">
-      <input type="text" v-model="credentials.username" placeholder="username" maxlength="50" class="i-auth-text" autofocus="autofocus">
-      <input type="password" v-model="credentials.password" placeholder="password" maxlength="50" class="i-auth-text">
-      <input type="button" value="Login" class="i-auth-submit" @click="submit">
+    <!--<div class="logo"></div>-->
+    <div class="open-source">
+      <a href="https://github.com/adam-piziak/bloktree" target="_blank">
+        <span>Project source</span>
+        <div class="git-logo"></div>
+      </a>
     </div>
-  -->
-  <div class="graphic"></div>
+  <div class="graphic" :class="{'premount': !mounted}"></div>
   </div>
 
 </template>
@@ -33,15 +49,44 @@ let time = 5000
 export default {
   data () {
     return {
+      mounted: false,
       credentials: {
         username: '',
-        password: ''
-      }
+        password: '',
+        code: ''
+      },
+      action: {
+        signup: false,
+        login: false
+      },
+      buttonText: 'Create Account'
     }
   },
+  mounted () {
+    setTimeout(() => {
+      this.mounted = true
+    }, 200)
+  },
   methods: {
-    submit () {
+    login () {
       auth.login(this, this.credentials, '/')
+    },
+    performAction () {
+      if (this.action.login) {
+        this.login()
+      } else if (!this.action.login && !this.action.signup) {
+        this.presentSignupForm()
+      }
+    },
+    presentLoginForm () {
+      this.action.signup = false
+      this.action.login = true
+      this.buttonText = 'Log in'
+    },
+    presentSignupForm () {
+      this.action.signup = true
+      this.action.login = false
+      this.buttonText = 'Create Account'
     },
     checkUser () {
       clearTimeout(typingTimer)
@@ -68,15 +113,95 @@ $background: #252525
 $font-size: .9em
 $assets: '../../assets/'
 
+.open-source
+  background: transparent
+  display: inline-block
+  height: 60px
+  position: absolute
+  right: 10px
+  bottom: 10px
+  z-index: 50
+  +transition(opacity .1s)
+  opacity: 0.5
+
+
+  span
+    height: 60px
+    line-height: 60px
+    color: white
+    display: inline-block
+    float: left
+    margin-right: 2px
+
+  .git-logo
+    +size(60px)
+    background:
+      color: transparent
+      image: url($assets + 'git-logo.png')
+      position: center center
+      size: 70%
+      repeat: no-repeat
+    float: right
+
+  &:hover
+    cursor: pointer
+    opacity: .9
+
+  &:active
+    opacity: 1
+
+.logo
+  +size(150px)
+  background:
+    color: transparent
+    image: url($assets + 'logo.svg')
+    position: center center
+    size: 100%
+  position: absolute
+  top: 50%
+  left: 50%
+  opacity: 0.4
+  +transform(translate(-50%, 40px))
+
+header
+  background: rgba(255, 255, 255, 0.05)
+  height: 60px
+  position: relative
+  z-index: 20
+  +transition(transform .2s)
+  +transform(translateY(0))
+
+  &.premount
+    +transform(translateY(-60px))
+
+  span
+    display: inline-block
+    height: 60px
+    line-height: 60px
+    float: right
+    padding: 0 10px
+    color: rgb(173, 173, 173)
+    +transition(background .1s, color .1s)
+    font-size: .9em
+    font-weight: 600
+
+    &:first-child
+      margin-right: 20px
+
+    &:hover
+      cursor: pointer
+      color: rgba(255, 255, 255, .8)
+
 .description
   color: white
   opacity: 0.9
   //letter-spacing: 0.0em
-  font-weight: 600
+  font-weight: 400
   position: absolute
-  top: 380px
-  left: 220px
+  top: 430px
+  left: 180px
   z-index: 10
+  +transition(opacity .3s)
 
 .graphic
   height: 100%
@@ -88,6 +213,10 @@ $assets: '../../assets/'
   position: absolute
   top: 0
   z-index: 0
+  opacity: 0.8
+  +transition(opacity .8s)
+  &.premount
+    opacity: 0
 .auth-page
   height: 100%
   background: $background
@@ -95,15 +224,22 @@ $assets: '../../assets/'
   position: relative
   min-width: 512px
 
+.premount
+  opacity: 0
 .auth-title
   text-align: center
   color: #d5d5d5
   width: 100%
   z-index: 10
   opacity: 1
-  margin-top: 100px
+  font-weight: 100
+  margin-top: 80px
   font:
     size: 6em
+  +transition(opacity .3s)
+
+  &.premount
+    opacity: 0
 
 .tree
   color: #0fd524
@@ -111,8 +247,9 @@ $assets: '../../assets/'
   &:hover
     cursor: default
 
-$height: 100px
-$width: 300px
+$height: 200px
+$width-n: 350
+$width: $width-n + px
 
 .signin-wrapper
   display: block
@@ -123,105 +260,87 @@ $width: 300px
   top: 370px
   left: 50%
   +transform(translateX(-50%))
-  overflow: hidden
   z-index: 100
 
   .signin
     display: block
     position: relative
-    background: transparent
-    height: $height
-    width: $width
-
-  .input-username
-    width: 100%
-    height: 38px
-    outline: 0
-    border: 0
-    display: block
-    position: relative
-    border-radius: 2px
-    text-indent: 10px
-    font-weight: 600
-    color: rgb(228, 228, 228)
-    letter-spacing: .05em
-    left: 50%
-    +transform(translateX(-50%))
-    background: rgba(255, 255, 255, 0.1)
-    +transition(background .3s, box-shadow .3s, color .3s)
-
-    &:focus
-      background: rgb(240, 239, 239)
-      color: rgb(59, 59, 59)
-      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3)
-
-  .button-auth
-    margin-top: 10px
-    width: 100%
-    height: 38px
-    font-weight: 600
-    outline: 0
-    border: 0
     opacity: 0
-    background: rgb(230, 230, 230)
-    color: rgb(50, 50, 50)
+    background: #d9d8d8
+    height: 110px
+    width: $width-n - 20px
+    padding: 10px
+    border-radius: 2px
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .5)
+    overflow: hidden
+    +transform(translateY(-30px) rotateX(-55deg))
+    +transition(opacity .3s ease .1s, transform .2s ease .1s, height .25s)
 
-    &:hover
-      cursor: pointer
-
-    &:active
-      background: rgb(255, 255, 255)
 
 
+    &.active
+      opacity: 1
+      +transform(translateY(0px) rotateX(0deg))
+
+    &.login
+      height: 75px
 
 
-/*.signin-wrapper
-  display: inline-block
-  position: absolute
-  z-index: 15
-  left: 50%
-  top: 30%
-  +transform(translate(-50%, -50%))
-  +size(350px auto)
-  background: white
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.21)
-  padding: 8px
-  border-radius: 2px
 
-  input.i-auth-text
-    display: block
-    outline: none
-    border: 0
-    text-indent: 10px
+  .text-input
+    background: #c4c4c4
     height: 30px
-    line-height: 30px
     width: 100%
-    font-size: $font-size
-    border-bottom: .1px solid rgba(0, 0, 0, 0.15)
-    +transition
-
-    &:focus
-      border-bottom: .1px solid rgba(0, 0, 0, 0.45)
-
-  input.i-auth-submit
-    background: rgb(142, 142, 142)
-    +margin(10px null null null)
-    padding: 5px
-    color: rgb(237, 237, 237)
+    color: #212121
+    margin: 4px 0
+    text-indent: 8px
     outline: 0
     border: 0
-    width: 100%
-    font-size: $font-size
+    font-weight: 400
+    letter-spacing: .03em
     border-radius: 2px
-    +transition(200ms)
-    //box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2)
-    font-weight: bold
-    letter-spacing: .1em
+    +transition(background .1s)
+
+    &::-webkit-input-placeholder
+      color: #6e6e6e
+
+    &:hover
+      background: #bebebe
+
+    &:focus
+      background: #b8b6b6
+
+
+  .button
+    width: 150px
+    +transform(translate(-50%, 0))
+    position: absolute
+    top: 50px
+    left: 50%
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .5)
+    height: 35px
+    color: #4d4b4b
+    border: 0
+    outline: 0
+    border-radius: 4px
+    font-weight: 600
+    background: #dbdbdb
+    +transition(background .1s, top .25s ease, width .3s, border-radius .2s, opacity .3s)
+
+    &.premount
+      opacity: 0
+    &.signup
+      top: 150px
+      width: $width
+      border-radius: 2px
+
+    &.login
+      top: 110px
+      width: $width
+      border-radius: 2px
 
     &:hover
       cursor: pointer
-      background: rgb(162, 162, 162)
-      color: #eee
-      box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2)
+      background: white
 
 </style>
