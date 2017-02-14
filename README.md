@@ -1,12 +1,6 @@
 # BlokTree
 Web app for BlokTree
 
-Tasks page:
-![alt tag](./readme/tasks.png)
-
-Projects page:
-![alt tag](./readme/projects.png)
-
 Install:
 ``` bash
 npm install
@@ -21,3 +15,9 @@ Build:
 ``` bash
 npm run build
 ```
+
+Tasks page:
+![alt tag](./readme/tasks.png)
+
+Projects page:
+![alt tag](./readme/projects.png)

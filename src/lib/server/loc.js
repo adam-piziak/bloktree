@@ -1,1 +1,1 @@
-export const SERVER_URL = 'http://www.bloktree.com'
+export const SERVER_URL = 'http://127.0.0.1:3000'
