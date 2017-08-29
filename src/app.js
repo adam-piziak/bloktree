@@ -11,6 +11,7 @@ Vue.use(VueResource)
 
 sync(store, router)
 
+//git test
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
